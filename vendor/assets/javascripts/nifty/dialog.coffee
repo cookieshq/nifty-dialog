@@ -31,6 +31,8 @@ window.Nifty.Dialog =
   #
   #   class      => the CSS class to assign to this dialog
   #
+  #   closable  => choose if the modal is coseable
+  #
   #   behavior   => the name of a behavior set to be invoked on dialog open/close.
   #                 Behaviors can be setup using the Nifty.Dialog.addBehavior method.
   #                 Valid behaviors: beforeLoad, onLoad, onSetContent, onClose
@@ -41,6 +43,8 @@ window.Nifty.Dialog =
     dialogID = if dialogsOpen == 0 then this.startingID else (dialogsOpen * 10) + this.startingID
 
     options.id = dialogID unless options.id?
+
+    options.closable = true unless options.closable?
 
     # Add the overlay
     overlayClass = ''
@@ -95,10 +99,11 @@ window.Nifty.Dialog =
           $('body').removeClass('niftyDialog-open')
 
 
-    # Set that clicking on the dialog's overlay will close the dialog
-    theOverlay.on 'click', (e)->
-      if $(e.target).is('.niftyOverlay')
-        insertedDialog.data('closeAction').call()
+    if options.closable == true
+      # Set that clicking on the dialog's overlay will close the dialog
+      theOverlay.on 'click', (e)->
+        if $(e.target).is('.niftyOverlay')
+          insertedDialog.data('closeAction').call()
 
     # load in the content
     if options.url?
