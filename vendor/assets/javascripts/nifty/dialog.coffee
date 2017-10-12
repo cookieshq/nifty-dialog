@@ -34,6 +34,8 @@ window.Nifty.Dialog =
   #   behavior   => the name of a behavior set to be invoked on dialog open/close.
   #                 Behaviors can be setup using the Nifty.Dialog.addBehavior method.
   #
+  #   overlayClass => this class is added to the overlay
+  #
   open: (options={})->
     # set a dialog ID for this dialog
     dialogsOpen = $('div.niftyDialog').length
@@ -52,8 +54,10 @@ window.Nifty.Dialog =
     # set the content on the dialog
     insertedDialog.data('options', options)
 
-    overlayClass = ''
+    overlayClass = options.overlayClass
+
     overlayClass = 'invisible' if dialogID > 1
+
     theOverlay = $("<div class='niftyOverlay #{overlayClass}'></div>").insertBefore(insertedDialog).css('z-index', 2000 + dialogID - 1)
     theOverlay.fadeIn('fast')
 
